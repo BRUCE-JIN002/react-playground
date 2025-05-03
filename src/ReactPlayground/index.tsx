@@ -3,7 +3,7 @@ import "allotment/dist/style.css";
 import Header from "./components/Header";
 import CodeEditor from "./components/CodeEditor";
 import Preview from "./components/Preview";
-import { usePlayGroundContext } from "./contexts/PlaygroundContext";
+import { usePlayGroundContext } from "./hooks/usePlayGroundContext";
 import classNames from "classnames";
 import AntdConfigContextProvider from "./contexts/AntdConfigContext";
 import "./index.scss";

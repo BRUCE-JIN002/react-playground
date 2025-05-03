@@ -1,11 +1,8 @@
 import { ConfigProvider } from "antd";
-import { usePlayGroundContext } from "./PlaygroundContext";
+import { usePlayGroundContext } from "../hooks/usePlayGroundContext";
+import { PropsWithChildren } from "react";
 
-const AntdConfigContextProvider = ({
-  children
-}: {
-  children: React.ReactNode;
-}) => {
+const AntdConfigContextProvider = ({ children }: PropsWithChildren) => {
   const { theme } = usePlayGroundContext();
 
   return (

@@ -1,4 +1,4 @@
-import { usePlayGroundContext } from "../../contexts/PlaygroundContext";
+import { usePlayGroundContext } from "../../hooks/usePlayGroundContext";
 import logo from "./icons/logo.svg";
 import styles from "./index.module.scss";
 import {
@@ -16,39 +16,19 @@ import { Dropdown, Switch, message } from "antd";
 import { downloadFiles } from "../../utils";
 import { useTranslation } from "react-i18next";
 import i18n from "../../../i18n/configs";
+import { onToggleTheme } from "../../utils/viewTransition";
 
 export default function Header() {
-  const { theme, toggleTheme, files, showMinMap, setShowMinMap } =
+  const { theme, setTheme, files, showMinMap, setShowMinMap } =
     usePlayGroundContext();
   const { t } = useTranslation();
 
-  const onToggleTheme = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-    if (!("startViewTransition" in document)) {
-      toggleTheme();
-      return;
+  const viewTransitionCallback = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
     }
-    const transiton = document.startViewTransition(toggleTheme);
-    const x = e.clientX;
-    const y = e.clientY;
-    const targetRadius = Math.hypot(
-      Math.max(window.innerWidth, window.innerWidth - x),
-      Math.max(window.innerHeight, window.innerHeight - y)
-    );
-    transiton.ready.then(() => {
-      document.documentElement.animate(
-        {
-          clipPath: [
-            `circle(0% at ${x}px ${y}px)`,
-            `circle(${targetRadius}px at ${x}px ${y}px)`
-          ]
-        },
-        {
-          duration: 500,
-          easing: "ease-in-out",
-          pseudoElement: "::view-transition-new(root)"
-        }
-      );
-    });
   };
 
   return (
@@ -76,7 +56,7 @@ export default function Header() {
         <span
           title={theme === "light" ? t("header.dark") : t("header.light")}
           className={styles.operation}
-          onClick={onToggleTheme}
+          onClick={(e) => onToggleTheme(e, viewTransitionCallback)}
         >
           {theme === "light" ? <MoonOutlined /> : <SunOutlined />}
         </span>

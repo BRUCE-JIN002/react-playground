@@ -4,7 +4,7 @@ import classnames from "classnames";
 import styles from "./index.module.scss";
 import { Popconfirm, message } from "antd";
 import { useDrag, useDrop } from "react-dnd";
-import { usePlayGroundContext } from "../../../contexts/PlaygroundContext";
+import { usePlayGroundContext } from "../../../hooks/usePlayGroundContext";
 import { useMount } from "ahooks";
 import { useTranslation } from "react-i18next";
 import { getFileIcon } from "../../Icon/FileIcons";

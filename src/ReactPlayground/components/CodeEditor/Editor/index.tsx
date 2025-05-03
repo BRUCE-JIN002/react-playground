@@ -1,10 +1,8 @@
 import { editor } from "monaco-editor";
 import MonacoEditor, { EditorProps, Monaco } from "@monaco-editor/react";
 import { createATA } from "./ata";
-import {
-  Theme,
-  usePlayGroundContext
-} from "../../../contexts/PlaygroundContext";
+import { Theme } from "../../../contexts/PlaygroundContext";
+import { usePlayGroundContext } from "../../../hooks/usePlayGroundContext";
 import styles from "./index.module.scss";
 
 export interface EditorFile {

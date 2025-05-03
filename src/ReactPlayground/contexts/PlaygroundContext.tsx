@@ -1,13 +1,7 @@
-import {
-  PropsWithChildren,
-  createContext,
-  useContext,
-  useEffect,
-  useState
-} from "react";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { compress, fileName2Language, uncompress } from "../utils";
 import { initFiles } from "../files";
-import { useToggle } from "ahooks";
+import { useMount } from "ahooks";
 import _ from "lodash";
 
 export interface File {
@@ -19,8 +13,8 @@ export interface File {
 export type Theme = "dark" | "light";
 export interface PlaygroundContext {
   files: File[];
-  theme: Theme;
-  toggleTheme: () => void;
+  theme?: Theme;
+  setTheme: (theme: Theme) => void;
   showMinMap: boolean;
   setShowMinMap: (thumbnail: boolean) => void;
   selectedFileName: string;
@@ -47,17 +41,28 @@ const getFilesFromUrl = () => {
   return files;
 };
 
-export const usePlayGroundContext = () => useContext(PlaygroundContext);
-
 export const PlaygroundProvider = (props: PropsWithChildren) => {
   const { children } = props;
   const [files, setFiles] = useState<File[]>(getFilesFromUrl() || initFiles);
   const [selectedFileName, setSelectedFileName] = useState<string>("App.tsx");
-  const [theme, { toggle: toggleTheme }] = useToggle<"dark", "light">(
-    "dark",
-    "light"
-  );
   const [showMinMap, setShowMinMap] = useState<boolean>(false);
+  const match = matchMedia("(prefers-color-scheme: dark)");
+  const [theme, setTheme] = useState<Theme>(match.matches ? "dark" : "light");
+
+  useMount(() => {
+    const themeHandle = (match: MediaQueryListEvent) => {
+      if (match.matches) {
+        setTheme("dark");
+      } else {
+        setTheme("light");
+      }
+    };
+    match.addEventListener("change", themeHandle);
+
+    return () => {
+      match.removeEventListener("change", themeHandle);
+    };
+  });
 
   const addFile = (name: string) => {
     const newFile = {
@@ -116,7 +121,7 @@ export const PlaygroundProvider = (props: PropsWithChildren) => {
         showMinMap,
         swapFile,
         setShowMinMap,
-        toggleTheme,
+        setTheme,
         setSelectedFileName,
         setFiles,
         addFile,

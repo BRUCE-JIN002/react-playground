@@ -1,6 +1,6 @@
 import Editor from "./Editor";
 import FileNameList from "./FileNameList";
-import { usePlayGroundContext } from "../../contexts/PlaygroundContext";
+import { usePlayGroundContext } from "../../hooks/usePlayGroundContext";
 import _ from "lodash";
 import styles from "./index.module.scss";
 
@@ -26,7 +26,7 @@ export default function CodeEditor() {
     <div className={styles.editorWrapper}>
       <FileNameList />
       <div className={styles.editor}>
-        <Editor file={file} theme={theme} onChange={onEditorChange} />
+        <Editor file={file} theme={theme!} onChange={onEditorChange} />
       </div>
     </div>
   );

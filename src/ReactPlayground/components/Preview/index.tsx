@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { usePlayGroundContext } from "../../contexts/PlaygroundContext";
+import { usePlayGroundContext } from "../../hooks/usePlayGroundContext";
 import iframeRaw from "./iframe.html?raw";
 import { Message } from "../Message";
 import CompilerWorker from "./compiler.worker?worker";
